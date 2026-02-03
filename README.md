@@ -1,4 +1,4 @@
-# v-auto-color
+# Vue-AutoColor
 
 一个兼容 vite/typescript/vue 环境的 node module，用于在 vite 编译时实现基于文本的自动颜色生成。相似的文本会返回相似的颜色，从而实现视觉上的一致性。
 

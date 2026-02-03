@@ -76,13 +76,13 @@ export function viteAutoColorPlugin(): Plugin {
         fileName: 'v-auto-color-precomputed.js',
         source: precomputedCode
       });
+    },
 
-      // Ensure the precomputed module is loaded before application code
-      this.emitFile({
-        type: 'asset',
-        fileName: 'v-auto-color-initializer.js',
-        source: `import "/v-auto-color-precomputed.js";`
-      });
+    // Inject precomputed colors into HTML
+    transformIndexHtml(html) {
+      return html.replace('</head>', `
+        <script type="module" src="/v-auto-color-precomputed.js"></script>
+      </head>`);
     }
   };
 }

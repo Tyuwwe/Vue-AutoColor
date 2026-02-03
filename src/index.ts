@@ -1,5 +1,6 @@
 import { getTextHash } from './core/hash';
 import { ColorConfig, ColorGenerator } from './core/color';
+import { viteAutoColorPlugin } from './vite-plugin';
 
 // Precomputed colors cache (filled by Vite plugin at build time)
 const precomputedColors: Record<string, Record<string, string>> = {};
@@ -53,3 +54,6 @@ export function __internal__setPrecomputedColors(colors: Record<string, Record<s
 
 // Export types
 export type { ColorConfig };
+
+// Export Vite plugin
+export { viteAutoColorPlugin };

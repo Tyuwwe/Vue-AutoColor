@@ -81,11 +81,55 @@ interface ColorConfig {
   hue?: [number, number];  // 色相范围，默认 [0, 360]
   saturation?: [number, number];  // 饱和度范围，默认 [70, 100]
   lightness?: [number, number];  // 亮度范围，默认 [40, 60]
+  algorithm?: 'hash' | 'levenshtein' | 'cosine' | 'jaccard';  // 算法类型，默认 'hash'
+  similarityThreshold?: number;  // 相似度阈值，默认 0.7
 }
 
 // 两种使用方式
 const colorSet1 = useAutoColor('category'); // 使用字符串作为类别
 const colorSet2 = useAutoColor({ /* 完整配置 */ }); // 使用对象配置
+```
+
+### 算法说明
+
+| 算法 | 描述 | 适用场景 |
+|------|------|----------|
+| `hash` | 基于文本哈希值生成颜色，相同文本返回相同颜色 | 快速生成，适用于文本完全匹配的场景 |
+| `levenshtein` | 基于编辑距离计算相似度，相似文本返回相似颜色 | 适用于拼写相似的文本，如 "hello" 和 "hello world" |
+| `cosine` | 基于字符频率的余弦相似度，相似文本返回相似颜色 | 适用于长度不同但字符分布相似的文本 |
+| `jaccard` | 基于字符集合的Jaccard相似度，相似文本返回相似颜色 | 适用于字符组成相似的文本 |
+
+### 算法配置示例
+
+```typescript
+import { useAutoColor } from 'v-auto-color';
+
+// 使用Levenshtein算法（编辑距离）
+const colorSet1 = useAutoColor({
+  category: 'set1',
+  algorithm: 'levenshtein',
+  similarityThreshold: 0.6 // 降低相似度阈值，使更多文本被认为相似
+});
+
+// 使用余弦相似度算法
+const colorSet2 = useAutoColor({
+  category: 'set2',
+  algorithm: 'cosine',
+  hue: [0, 180] // 限制色相范围为红色到青色
+});
+
+// 使用Jaccard相似度算法
+const colorSet3 = useAutoColor({
+  category: 'set3',
+  algorithm: 'jaccard',
+  saturation: [80, 100], // 提高饱和度，使颜色更鲜艳
+  lightness: [50, 70] // 提高亮度，使颜色更明亮
+});
+
+// 获取颜色
+const color1 = colorSet1.getColor('hello');
+const color2 = colorSet1.getColor('hello world'); // 与 'hello' 相似，返回相似颜色
+const color3 = colorSet1.getColor('test'); // 与 'hello' 不相似，返回不同颜色
 ```
 
 ## 性能优化

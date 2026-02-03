@@ -1,5 +1,6 @@
 import { getTextHash } from './core/hash';
 import { ColorConfig, ColorGenerator } from './core/color';
+import { getSimilarityScore } from './core/similarity';
 import { viteAutoColorPlugin } from './vite-plugin';
 
 // Precomputed colors cache (filled by Vite plugin at build time)
@@ -29,7 +30,31 @@ export class ColorSet {
       return precomputedColors[this.category][text];
     }
 
-    // Generate color at runtime if not precomputed
+    // Check for similar strings in the same category (if using similarity algorithm)
+    if (this.config.algorithm && this.config.algorithm !== 'hash' && precomputedColors[this.category]) {
+      const similarityThreshold = this.config.similarityThreshold || 0.7;
+      let mostSimilarText = text;
+      let highestSimilarity = 0;
+
+      // Find most similar text in the category
+      for (const existingText in precomputedColors[this.category]) {
+        const similarity = getSimilarityScore(text, existingText, this.config.algorithm as 'levenshtein' | 'cosine' | 'jaccard');
+        if (similarity > highestSimilarity && similarity >= similarityThreshold) {
+          highestSimilarity = similarity;
+          mostSimilarText = existingText;
+        }
+      }
+
+      // Use color from most similar text if found
+      if (mostSimilarText !== text && precomputedColors[this.category][mostSimilarText]) {
+        const color = precomputedColors[this.category][mostSimilarText];
+        // Cache the color for current text
+        precomputedColors[this.category][text] = color;
+        return color;
+      }
+    }
+
+    // Generate color at runtime if not precomputed and no similar text found
     const color = this.generator.getColor(text, getTextHash);
     
     // Cache the generated color for future use

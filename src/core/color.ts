@@ -1,9 +1,13 @@
 // Color generation based on hash values
+export type AlgorithmType = 'hash' | 'levenshtein' | 'cosine' | 'jaccard';
+
 export interface ColorConfig {
   category?: string;
   hue?: [number, number];
   saturation?: [number, number];
   lightness?: [number, number];
+  algorithm?: AlgorithmType;
+  similarityThreshold?: number; // 相似度阈值，用于相似度算法
 }
 
 export class ColorGenerator {
@@ -14,7 +18,9 @@ export class ColorGenerator {
       category: config.category || 'default',
       hue: config.hue || [0, 360],
       saturation: config.saturation || [70, 100],
-      lightness: config.lightness || [40, 60]
+      lightness: config.lightness || [40, 60],
+      algorithm: config.algorithm || 'hash',
+      similarityThreshold: config.similarityThreshold || 0.7
     };
   }
 

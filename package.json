@@ -1,6 +1,6 @@
 {
   "name": "v-auto-color",
-  "version": "1.0.3",
+  "version": "1.0.6",
   "description": "Vite plugin for automatic color generation based on text similarity",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -32,7 +32,6 @@
     "vite": "^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0"
   },
   "dependencies": {
-    "@rollup/pluginutils": "^5.0.2"
   },
   "devDependencies": {
     "@types/node": "^18.19.3",

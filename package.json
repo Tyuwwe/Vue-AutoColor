@@ -1,6 +1,6 @@
 {
   "name": "v-auto-color",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Vite plugin for automatic color generation based on text similarity",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -11,6 +11,10 @@
       "require": "./dist/index.js",
       "types": "./dist/index.d.ts"
     }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Tyuwwe/Vue-AutoColor.git"
   },
   "scripts": {
     "build": "tsup src/index.ts src/vite-plugin.ts --format cjs,esm --dts",
@@ -26,7 +30,7 @@
     "vue",
     "typescript"
   ],
-  "author": "",
+  "author": "Tyuwwe",
   "license": "MIT",
   "peerDependencies": {
     "vite": "^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0"
